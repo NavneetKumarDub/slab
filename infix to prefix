@@ -1,0 +1,94 @@
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+#define N 20
+char stack[N];
+int top = -1;
+void push(char c){
+    if(top == N-1){
+        printf("Stack overflow\n");
+        return;
+    }
+    else{
+        stack[++top] = c;
+    }
+}
+char pop(){
+    if(top == -1){
+        printf("Stack underflow\n");
+        return 'n';
+    }
+    else{
+        char temp = stack[top];
+        top--;
+        return temp;
+    }
+   
+
+    }
+int order(char o){
+    if(o == '^') return 3;
+    else if(o == '*' || o == '/') return 2;
+    else if(o == '+' || o == '-') return 1;
+    else return 0;
+}
+void display(){
+    printf("stack = ");
+    for(int i = 0;i<=top;i++){
+        printf("%c",stack[i]);
+    }
+}
+int main(){
+    char output[N];
+    char exp[N];
+    printf("Enter you expression : ");
+    scanf("%s",exp);
+    int idx = -1;
+    for(int i = 0;i<strlen(exp);i++){
+        char e = exp[i];
+        if(e == '('){
+            push(e);
+        }
+        else if(isalnum(e)){
+            output[++idx] = e;
+        }
+        else if(top == -1){
+            push(e);
+        }
+        else if(e == ')'){
+            while(stack[top] != '(' && top != -1){
+                output[++idx] = pop();
+                //printf(" \n %c hii\n",stack[top]);
+            }
+            pop();
+        }
+        else if(order(e)>=order(stack[top])){
+            push(e);
+        }
+        else if(order(e)<order(stack[top])){
+            printf("\nhii\n");
+            if(e != '^'){
+                //printf("\n %d,%d\n",order(e),order(stack[top]));
+                while(order(e)<order(stack[top]) && top != -1){
+                    output[++idx] = pop();
+                    printf("\n %s \n",output);
+                }
+               
+            }
+             push(e);
+        }
+        printf("in = %c , output = %s ,",e,output);
+        display();
+        printf("\n");
+
+    }
+  
+    while(top != -1){
+        output[++idx] = pop();
+    }
+    for(int i = 0;i<=idx;i++){
+        printf("%c",output[i]);
+    }
+    return 0;
+    
+}
