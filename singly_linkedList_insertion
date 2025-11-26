@@ -1,0 +1,145 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* next;
+};
+
+struct Node* head = NULL;
+
+void CreateList(int n){
+    if(n<1){
+        printf("\nN must be greater than 0");
+        return;
+    }
+    
+    struct Node* temp = head;
+
+    for(int i= 0;i<n;i++){
+        struct Node* NewNode = (struct Node*)malloc(sizeof(struct Node));
+        int val;
+        printf("Enter the data : ");
+        scanf("%d",&val);
+        NewNode->data = val;
+        NewNode->next= NULL;
+        if(head == NULL) head = NewNode;
+        else{
+            temp->next  = NewNode;
+        }
+        temp  = NewNode;
+    }
+}
+
+void InsertAtEnd(int val){
+    struct Node* NewNode = (struct Node*)malloc(sizeof(struct Node));
+    NewNode->data = val;
+    NewNode->next = NULL;
+
+    if(head == NULL){
+        head = NewNode;
+    }
+    else{
+        struct Node* temp = head;
+        while(temp->next != NULL){
+            temp = temp->next;
+        }
+        temp->next = NewNode;
+    }
+}
+
+void InsertAtBegining(int val){
+    struct Node* NewNode = (struct Node*)malloc(sizeof(struct Node));
+    NewNode->data = val;
+    NewNode->next = NULL;
+
+    if(head == NULL){
+        head = NewNode;
+    }
+    else{
+        NewNode -> next = head;
+        head = NewNode;
+    }
+}
+
+void InsertAtPos(int val,int pos){
+    if(pos < 1){
+        printf("\nPosition must be greater than 0");
+        return;
+    }
+    else if(pos == 1){
+        InsertAtBegining(val);
+    }
+    else{
+        struct Node* temp = head;
+        struct Node* prev = NULL;
+        for(int i = 1;i<pos && temp!=NULL;i++){
+            prev = temp;
+            temp= temp->next;
+        }
+        if(prev == NULL){
+            printf("\nPosition is greater than the number of data in Linkedlist");
+            return;
+        }else{
+            struct Node* NewNode = (struct Node*)malloc(sizeof(struct Node));
+            NewNode -> data = val;
+            prev->next = NewNode;
+            NewNode->next = temp;
+        }
+    }
+}
+
+void display(){
+    if(head == NULL){
+        printf("\nThere is no data!");
+    }
+    else{
+        struct Node* temp = head;
+        while(temp!=NULL){
+            printf("%d -> ",temp->data);
+            temp = temp-> next;
+        }
+        printf("NULL");
+    }
+}
+
+int main(){
+    while(1){
+        printf("\n1.Create list\n2.InsertAtbegining\n3.InsertAtend\n4.InsertAtPos\n5.display\n6.exit\nEnter your choice : ");
+        int choice;
+        scanf("%d",&choice);
+        int n;
+        int pos;
+        switch(choice){
+            case 1:
+                printf("Enter the value of n: ");
+                scanf("%d",&n);
+                CreateList(n);
+                break;
+            case 2:
+                printf("Enter the data: ");
+                scanf("%d",&n);
+                InsertAtBegining(n);
+                break;
+            case 3:
+                printf("Enter the data: ");
+                scanf("%d",&n);
+                InsertAtEnd(n);
+                break;
+            case 4:
+                printf("Enter the data");
+                scanf("%d",&n);
+                printf("Enter the pos");
+                scanf("%d",&pos);
+                InsertAtPos(n,pos);
+                break;
+            case 5:
+                display();
+                break;
+            case 6:
+                printf("Exiting....");
+                return 0;
+        }
+    }
+    return 0;
+}
